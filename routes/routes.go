@@ -17,6 +17,7 @@ func SetupRouter() *gin.Engine {
 	classGroup := r.Group("/class")
 	{
 		classGroup.GET(":id/members", controllers.GetClassMembers)
+		classGroup.GET(":id", controllers.GetClass)
 	}
 	studentGroup := r.Group("/student")
 	{

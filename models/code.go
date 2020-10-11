@@ -22,15 +22,28 @@ type Code struct {
 type ResolvedCode struct {
 	Code *Code `json:"code"`
 	//Student    *Student   `json:"student"`
-	Candidates *[]Student `json:"candidates"`
+	Classes    map[uint32]Class `json:"classes"`
+	Candidates *[]Student       `json:"candidates"`
+}
+
+func GetCodeByCode(c *Code, code string) error {
+	if err := config.DB.Where("code = ?", code).Joins("Student").Preload("Student.Class").First(&c).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func GetCodeByID(c *Code, code uint32) error {
+	if err := config.DB.Where("id = ?", code).Joins("Student").Preload("Student.Class").First(&c).Error; err != nil {
+		return err
+	}
+	return nil
 }
 
 func ResolveCode(resolved *ResolvedCode, code string) error {
 	var co Code
 	var candidates []Student
-	if err := config.DB.Model(&co).Where("code = ?", code).Joins("Student").Preload("Student.Class").First(&co).Error; err != nil {
-		return err
-	}
+	GetCodeByCode(&co, code)
 
 	if co.Student.Class == nil { //If the student doesn't belong to a class. Have them vote for everyone.
 		if err := config.DB.Debug().Model(&candidates).Joins("Class").Where("candidate = ?", 1).Find(&candidates).Error; err != nil {
@@ -44,9 +57,18 @@ func ResolveCode(resolved *ResolvedCode, code string) error {
 		}
 	}
 
+	//Build a class lookup table so that the client doesn't have to assemble one and we can save on payload size
+	classes := make(map[uint32]Class)
+	for i, cand := range candidates {
+		if _, ok := classes[cand.Class.ID]; !ok {
+			classes[cand.Class.ID] = *cand.Class //Dereference so we don't end up with a nil pointer when we clear it from the student
+		}
+		candidates[i].Class = nil
+	}
+
 	*resolved = ResolvedCode{
-		Code: &co,
-		//Student:    co.Student,
+		Code:       &co,
+		Classes:    classes,
 		Candidates: &candidates,
 	}
 

@@ -27,6 +27,6 @@ func SetupRouter() *gin.Engine {
 	{
 		codeGroup.GET(":id", controllers.ResolveCode)
 	}
-	r.GET("/vote/:code", controllers.CastVote)
+	r.POST("/vote/:code", controllers.CastVote)
 	return r
 }

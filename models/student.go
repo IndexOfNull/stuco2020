@@ -35,6 +35,20 @@ func GetAllStudents(students *[]Student) error {
 	return nil
 }
 
+func GetStudentsByIDs(students *[]Student, ids *[]uint32) error {
+	if err := config.DB.Joins("Class").Find(students, ids).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func GetCandidatesByIDs(students *[]Student, ids *[]uint32) error {
+	if err := config.DB.Joins("Class").Where("candidate = ?", true).Find(students, ids).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 //GetStudent retrieves a student by ID
 func GetStudent(student *Student, id uint32) error {
 	if err := config.DB.Debug().Joins("Class").Where(&Student{ID: id}).Find(student).Error; err != nil {

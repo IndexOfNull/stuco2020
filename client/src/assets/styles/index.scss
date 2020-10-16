@@ -1,0 +1,10 @@
+
+.icon {
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.qr-scan-2 {
+    @extend .icon;
+    background-image: url("../icons/qr-scan-2-line.png");
+}

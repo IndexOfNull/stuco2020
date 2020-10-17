@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 //import Home from "../views/Home.vue";
-import Code from "../views/CodeAsk.vue";
+import CodeAsk from "../views/CodeAsk.vue";
 
 const routes = [
   {
-    path: "/",
+    path: "/:error?",
     name: "Code",
-    component: Code
+    component: CodeAsk
   },
   {
     path: "/info",
@@ -16,6 +16,13 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: function() {
       return import(/* webpackChunkName: "info" */ "../views/Info.vue");
+    }
+  },
+  {
+    path: "/vote/:code",
+    name: "Vote",
+    component: function() {
+      return import("../views/Vote.vue");
     }
   }
 ];

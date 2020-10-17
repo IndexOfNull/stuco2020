@@ -33,6 +33,9 @@ func CastVote(c *gin.Context) {
 	} else if code.TimesUsed >= code.MaxUses {
 		c.JSON(http.StatusForbidden, gin.H{"error": "code has been used too many times"})
 		return
+	} else if code.Active == false {
+		c.JSON(http.StatusForbidden, gin.H{"error": "code is not activated"})
+		return
 	} else if code.Student == nil {
 		c.JSON(http.StatusForbidden, gin.H{"error": "code is orphaned and is therefore not valid; contact the code manager to give it a new owner."})
 		return

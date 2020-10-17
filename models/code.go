@@ -17,6 +17,7 @@ type Code struct {
 	UpdatedAt *time.Time `json:"updated_at"`
 	TimesUsed uint16     `json:"times_used" gorm:"not null;default:0"`
 	MaxUses   uint16     `json:"max_uses" gorm:"not null;default:1"`
+	Active    bool       `json:"active" gorm:"not null;default:1"`
 }
 
 //ResolvedCode represents a code that has been resolved with its corresponding information.

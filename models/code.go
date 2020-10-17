@@ -43,7 +43,11 @@ func GetCodeByID(c *Code, code uint32) error {
 func ResolveCode(resolved *ResolvedCode, code string) error {
 	var co Code
 	var candidates []Student
-	GetCodeByCode(&co, code)
+	err := GetCodeByCode(&co, code)
+
+	if err != nil {
+		return err
+	}
 
 	if co.Student.Class == nil { //If the student doesn't belong to a class. Have them vote for everyone.
 		if err := config.DB.Debug().Model(&candidates).Joins("Class").Where("candidate = ?", 1).Find(&candidates).Error; err != nil {

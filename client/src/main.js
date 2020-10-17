@@ -7,26 +7,26 @@ import "@/assets/styles/index.scss";
 import "@/assets/styles/tailwind.css";
 
 const store = createStore({
-  state () {
+  state() {
     return {
       redirectError: "",
       code: ""
-    }
+    };
   },
   mutations: {
-    error (state, err) {
-      state.redirectError = err
+    error(state, err) {
+      state.redirectError = err;
     },
-    clearerror (state) {
-      state.redirectError = ""
+    clearerror(state) {
+      state.redirectError = "";
     },
-    code (state, code) {
-      state.code = code
+    code(state, code) {
+      state.code = code;
     }
   }
-})
-
+});
 
 createApp(App)
-  .use(router).use(store)
+  .use(router)
+  .use(store)
   .mount("#app");

@@ -4,16 +4,17 @@
     <router-link to="/about">About</router-link>
   </div-->
   <div class="bg-dark text-white p-2 h-full">
-    <p class="opacity-25 absolute m-2 bottom-0 right-0 w-full text-center sm:text-right">
+    <p
+      class="opacity-25 absolute m-2 bottom-0 right-0 w-full text-center sm:text-right"
+    >
       Made with ❤️ by IoN
     </p>
 
-    <router-view v-slot=" { Component }">
+    <router-view v-slot="{ Component }">
       <transition name="fade" mode="out-in">
         <component :is="Component" />
       </transition>
     </router-view>
-
   </div>
 </template>
 
@@ -36,6 +37,6 @@
 
 .fade-enter-from,
 .fade-leave-to {
-  opacity: 0
+  opacity: 0;
 }
 </style>

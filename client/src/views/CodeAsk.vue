@@ -1,8 +1,14 @@
 <template>
   <div class="h-full flex flex-col justify-center items-center">
     <div class="sm:w-1/2 w-full">
-      <TitleCard title="👋 Hi" subtext="Enter your code below to begin voting"></TitleCard>
-      <div v-if="error != ''" class="p-2 rounded border-red-500 bg-red-400 text-red-900 border-2 mb-2">
+      <TitleCard
+        title="👋 Hi"
+        subtext="Enter your code below to begin voting"
+      ></TitleCard>
+      <div
+        v-if="error != ''"
+        class="p-2 rounded border-red-500 bg-red-400 text-red-900 border-2 mb-2"
+      >
         {{ error }}
       </div>
       <div class="flex justify-center">
@@ -23,8 +29,8 @@ export default {
     TitleCard
   },
   computed: {
-    error () {
-      return this.$store.state.redirectError
+    error() {
+      return this.$store.state.redirectError;
     }
   }
 };

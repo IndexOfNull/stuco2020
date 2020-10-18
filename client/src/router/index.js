@@ -24,6 +24,10 @@ const routes = [
     component: function() {
       return import("../views/Vote.vue");
     }
+  },
+  {
+    path: "/:catchAll(.*)",
+    redirect: "/"
   }
 ];
 

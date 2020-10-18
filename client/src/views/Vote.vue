@@ -17,7 +17,7 @@
                 <h1 class="sm:text-4xl text-3xl">{{ c.name }}</h1>
                 <p class="italic">(Pick {{ c.vote_count }})</p>
               </header>
-              <MultiCheckbox :options="c.students" :max=1 />
+              <MultiCheckbox :options="c.students" :max=c.vote_count />
             </div>
           </div>
         </form>

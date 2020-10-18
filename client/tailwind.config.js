@@ -14,12 +14,15 @@ module.exports = {
         dark: "#02182B",
         primary: "#0197F6",
         secondary: "#68C5DB",
-        tertiary: "#448FA3"
+        tertiary: "#448FA3",
+        lightbg: "#FFFEFA"
       }
     }
   },
   variants: {
     opacity: ["responsive", "hover", "focus", "disabled"]
   },
-  plugins: []
+  plugins: [
+    require('@tailwindcss/custom-forms'),
+  ]
 };

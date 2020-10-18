@@ -2,7 +2,7 @@
   <div class="text-black">
     <div>
       <input
-        class="p-2 mb-2 h-16 rounded w-full text-2xl text-center font-mono"
+        class="p-2 mb-2 h-16 rounded w-full text-2xl text-center font-mono border focus:shadow-outline focus:outline-none"
         type="text"
         v-bind:placeholder="placeholder"
         v-bind:value="code"

@@ -27,3 +27,7 @@ body, html {
 .fade-leave-to {
   opacity: 0;
 }
+
+input:disabled+label {
+  @apply opacity-25
+}

@@ -27,16 +27,4 @@
   color: #2c3e50;
   height: 100%;
 }
-
-.fade-enter-active,
-.fade-leave-active {
-  transition-duration: 0.15s;
-  transition-property: opacity;
-  transition-timing-function: ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
 </style>

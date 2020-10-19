@@ -3,9 +3,9 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
   </div-->
-  <div class="bg-dark text-white p-2 h-full">
+  <div class="text-white p-2 h-full">
     <p
-      class="opacity-25 absolute m-2 bottom-0 right-0 w-full text-center sm:text-right"
+      class="opacity-25 fixed m-2 bottom-0 right-0 w-full text-center sm:text-right"
     >
       Made with ❤️ by IoN
     </p>

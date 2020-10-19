@@ -1,9 +1,11 @@
 <template>
-  <div class="h-full flex flex-col justify-center items-center">
+  <div class="h-full flex flex-col items-center py-2">
     <transition name="fade" mode="out-in">
-      <div class="sm:w-1/2 w-full" v-if="code.code == undefined">
-        <Loader></Loader>
-        <p class="text-lg">Please wait while we find your code</p>
+      <div class="h-full flex flex-col justify-center" v-if="code.code == undefined">
+        <div class="w-full">
+          <Loader></Loader>
+          <p class="text-lg">Please wait while we find your code</p>
+        </div>
       </div>
       <div class="sm:w-1/2 w-full" v-else>
         <header class="mb-4">

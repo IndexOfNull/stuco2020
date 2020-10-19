@@ -28,6 +28,7 @@ body, html {
   opacity: 0;
 }
 
-input:disabled+label {
+input:disabled+label,
+input:disabled {
   @apply opacity-25
 }

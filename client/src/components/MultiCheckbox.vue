@@ -9,7 +9,8 @@
                         :id="student.id"
                         :value="student.id"
                         v-model="selected"
-                        :disabled="max != -1 && selected.length >= max && !selected.includes(student.id)"
+                        :disabled="(max != -1 && selected.length >= max && !selected.includes(student.id)) || options.length == max"
+                        :checked="options.length == max"
                     >
                     <label class="text-lg ml-2 align-middle" :for="student.id">{{ student.firstname}} {{ student.lastname }}</label>
                 </div>

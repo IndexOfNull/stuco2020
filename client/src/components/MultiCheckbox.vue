@@ -29,11 +29,6 @@
 <script>
 export default {
   name: "MultiCheckbox",
-  data() {
-    return {
-      selected: []
-    };
-  },
   props: {
     max: {
       type: Number,
@@ -52,10 +47,11 @@ export default {
   methods: {
     onChange(e) {
       let newVal = [...this.modelValue];
+      console.log(newVal, e.target.value)
       if (e.target.checked) {
         newVal.push(parseInt(e.target.value));
       } else {
-        newVal.splice(newVal.indexOf(e.target.value), 1);
+        newVal.splice(newVal.indexOf(parseInt(e.target.value)), 1);
       }
 
       this.$emit("update:modelValue", newVal);

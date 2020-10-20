@@ -53,9 +53,6 @@ export default {
 
             this.$emit('update:modelValue', newVal)
         }
-    },
-    beforeMount () {
-        console.log(this.modelValue)
     }
 }
 </script>

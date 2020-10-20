@@ -69,7 +69,6 @@ export default {
         data.classes[key].students = []
       }
 
-      console.log(response.data)
       data.candidates.forEach(student => {
         if (student.class_id != undefined) {
           data.classes[student.class_id].students.push(student)
@@ -91,7 +90,6 @@ export default {
       }, 500) //Our UI is too fast otherwise lol
     }).catch((e) => {
       setTimeout(() => {
-        console.log(e.type)
         if (e.message == "Network Error") {
           this.$store.commit("error", "Something went wrong while contacting the voting service")
         } else {

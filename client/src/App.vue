@@ -6,6 +6,7 @@
   <div class="text-white p-2 h-full">
     <p
       class="opacity-25 fixed m-2 bottom-0 right-0 w-full text-center sm:text-right"
+      style="z-index: -1"
     >
       Made with ❤️ by IoN
     </p>

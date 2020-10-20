@@ -19,7 +19,8 @@
                 <h1 class="sm:text-4xl text-3xl">{{ c.name }}</h1>
                 <p class="italic">(Pick {{ c.vote_count }})</p>
               </header>
-              <MultiCheckbox :options="c.students" :max=c.vote_count />
+              <MultiCheckbox v-model="c.selected" :options="c.students" :max=c.vote_count />
+              <p>{{ c.selected }}</p>
             </div>
           </div>
         </form>
@@ -74,6 +75,15 @@ export default {
           data.classes[student.class_id].students.push(student)
         }
       })
+
+      Object.keys(data.classes).forEach(key => {
+        if (data.classes[key].vote_count == data.classes[key].students.length) {
+          data.classes[key].selected = data.classes[key].students.map(s => s.id)
+        } else {
+          data.classes[key].selected = []
+        }
+      })
+
       this.classes = data.classes
       this.response = response.data
       setTimeout(() => {

@@ -8,9 +8,9 @@
                         class="h-8 w-8 align-middle rounded form-checkbox text-primary"
                         :id="student.id"
                         :value="student.id"
-                        v-model="selected"
-                        :disabled="(max != -1 && selected.length >= max && !selected.includes(student.id)) || options.length == max"
-                        :checked="options.length == max"
+                        :checked="modelValue.includes(student.id)"
+                        :disabled="(max != -1 && modelValue.length >= max && !modelValue.includes(student.id)) || options.length == max"
+                        v-on:change="onChange"
                     >
                     <label class="text-lg ml-2 align-middle" :for="student.id">{{ student.firstname}} {{ student.lastname }}</label>
                 </div>
@@ -34,7 +34,28 @@ export default {
         },
         options: {
             type: Object
+        },
+        modelValue: {
+            type: Array,
+            default: function() {
+                return []
+            }
         }
+    },
+    methods: {
+        onChange (e) {
+            let newVal = [...this.modelValue]
+            if (e.target.checked) {
+                newVal.push(parseInt(e.target.value))
+            } else {
+                newVal.splice(newVal.indexOf(e.target.value), 1)
+            }
+
+            this.$emit('update:modelValue', newVal)
+        }
+    },
+    beforeMount () {
+        console.log(this.modelValue)
     }
 }
 </script>

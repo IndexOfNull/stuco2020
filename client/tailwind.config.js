@@ -22,7 +22,5 @@ module.exports = {
   variants: {
     opacity: ["responsive", "hover", "focus", "disabled"]
   },
-  plugins: [
-    require('@tailwindcss/custom-forms'),
-  ]
+  plugins: [require("@tailwindcss/custom-forms")]
 };

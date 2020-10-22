@@ -10,24 +10,33 @@
           <p class="text-lg">Please wait while we find your code</p>
         </div>
       </div>
-      <div class="sm:w-1/2 w-full" v-else>
+      <div class="sm:w-2/3 w-full" v-else>
         <header class="mb-4">
           <h1 class="text-5xl">Hello, {{ code.student.firstname }}</h1>
-          <p>Your ballot is below</p>
+          <p>🗳️ Your ballot is below 🗳️</p>
+          <p class="italic opacity-50">(Remember: Your vote for a position will not count unless it says "This one's good to go!")</p>
         </header>
         <form>
           <div v-for="c in classes" :key="c.id">
-            <div class="p-4 m-2 w bg-lightbg rounded-lg text-black text-left">
+            <div class="p-4 m-2 w bg-red-200 rounded-lg text-black text-left transition-colors duration-100" :class="{ 'bg-lightbg': !(c.selected.length == 0 || c.selected.length != c.vote_count) }">
               <header class="mb-2">
                 <h1 class="sm:text-4xl text-3xl">{{ c.name }}</h1>
-                <p class="italic">(Pick {{ c.vote_count }})</p>
+                <!--p class="italic inline mr-1">(Pick {{ c.vote_count }})</p-->
+                <p
+                  class="italic inline text-red-900"
+                  v-if="
+                    c.selected.length == 0 || c.selected.length != c.vote_count
+                  "
+                >
+                  (Currently abstaining, pick {{ c.vote_count - c.selected.length }} more for your vote to count)
+                </p>
+                <p class="text-tertiary" v-else>This one's good to go!</p>
               </header>
               <MultiCheckbox
                 v-model="c.selected"
                 :options="c.students"
                 :max="c.vote_count"
               />
-              <p>{{ c.selected }}</p>
             </div>
           </div>
         </form>

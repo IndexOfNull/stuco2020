@@ -47,7 +47,6 @@ export default {
   methods: {
     onChange(e) {
       let newVal = [...this.modelValue];
-      console.log(newVal, e.target.value)
       if (e.target.checked) {
         newVal.push(parseInt(e.target.value));
       } else {

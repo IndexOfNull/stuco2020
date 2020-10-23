@@ -3,7 +3,7 @@
     <transition name="fade" mode="out-in">
       <div
         class="h-full flex flex-col justify-center"
-        v-if="code.code == undefined"
+        v-if="showBallot == false"
       >
         <div class="w-full">
           <Loader></Loader>
@@ -12,13 +12,17 @@
       </div>
       <div class="sm:w-2/3 w-full" v-else>
         <header class="mb-4">
-          <h1 class="text-5xl">Hello, {{ code.student.firstname }}</h1>
+          <h1 class="text-5xl">Hello, {{ student.firstname }}</h1>
           <p>🗳️ Your ballot is below 🗳️</p>
           <p class="italic opacity-50">(Remember: Your vote for a position will not count unless it says "This one's good to go!")</p>
         </header>
         <form>
           <div v-for="c in classes" :key="c.id">
-            <div class="p-4 m-2 w bg-red-200 rounded-lg text-black text-left transition-colors duration-100" :class="{ 'bg-lightbg': !(c.selected.length == 0 || c.selected.length != c.vote_count) }">
+            <div 
+              class="p-4 m-2 w bg-red-200 rounded-lg text-black text-left transition-colors duration-100"
+              :class="{ 'bg-lightbg': !(c.selected.length == 0 || c.selected.length != c.vote_count) }"
+              v-if="c.students.length > 0"  
+            >
               <header class="mb-2">
                 <h1 class="sm:text-4xl text-3xl">{{ c.name }}</h1>
                 <!--p class="italic inline mr-1">(Pick {{ c.vote_count }})</p-->
@@ -56,7 +60,9 @@ export default {
     return {
       code: Object,
       response: Object,
-      classes: Object
+      student: Object,
+      classes: Object,
+      showBallot: false
     };
   },
   components: {
@@ -71,45 +77,47 @@ export default {
       .get(s.globalSettings.backendUrl + "code/" + s.code + "")
       .then(response => {
         //Validation of code, throw error if necessary
-        if (response.data.code == null) {
+        console.log(response)
+        let data = response.data;
+        this.response = data;
+        this.student = data.student;
+        this.code = data;
+
+        if (this.student == null) {
           throw "The entered code does not exist";
-        } else if (
-          response.data.code.times_used >= response.data.code.max_uses
-        ) {
+        } else if (data.times_used >= data.max_uses) {
           throw "The entered code has no more uses left";
-        } else if (response.data.code.active == false) {
+        } else if (data.active == false) {
           throw "The entered code is currently deactivated";
         }
 
+        this.classes = data.student.votes_for;
+
+
         //If the code is valid
-        let data = response.data;
 
-        for (const key in response.data.classes) {
+        /*for (const key in response.data.classes) {
           data.classes[key].students = [];
-        }
+        }*/
 
-        data.candidates.forEach(student => {
+        /*data.candidates.forEach(student => {
           if (student.class_id != undefined) {
             data.classes[student.class_id].students.push(student);
           }
-        });
+        });*/
 
-        Object.keys(data.classes).forEach(key => {
-          if (
-            data.classes[key].vote_count == data.classes[key].students.length
-          ) {
-            data.classes[key].selected = data.classes[key].students.map(
-              s => s.id
-            );
+        Object.keys(this.classes).forEach(key => {
+          console.log(key)
+          let c = this.classes[key]
+          if (c.students.length == c.vote_count) {
+            c.selected = c.students.map(student => student.id)
           } else {
-            data.classes[key].selected = [];
+            c.selected = []
           }
         });
 
-        this.classes = data.classes;
-        this.response = response.data;
         setTimeout(() => {
-          this.code = response.data.code;
+          this.showBallot = true;
         }, 500); //Our UI is too fast otherwise lol
       })
       .catch(e => {

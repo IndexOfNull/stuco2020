@@ -8,7 +8,7 @@ import (
 )
 
 func ResolveCode(c *gin.Context) {
-	var resolved models.ResolvedCode
+	var resolved models.Code
 	models.ResolveCode(&resolved, c.Params.ByName("id"))
 	c.JSON(http.StatusOK, resolved)
 }

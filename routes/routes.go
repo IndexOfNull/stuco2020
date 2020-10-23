@@ -40,6 +40,6 @@ func SetupRouter() *gin.Engine {
 	}
 	r.GET("/student/:id", controllers.GetStudent)
 	r.GET("/code/:id", controllers.ResolveCode)
-	r.POST("/vote/:code", controllers.CastVote)
+	//r.POST("/vote/:code", controllers.CastVote)
 	return r
 }

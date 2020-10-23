@@ -1,18 +1,10 @@
 package controllers
 
-import (
-	"fmt"
-	"net/http"
-
-	"github.com/gin-gonic/gin"
-	"github.com/indexofnull/stuco2020/models"
-)
-
 type VoteBody struct {
 	IDs []uint32 `json:"ids" binding:"required"`
 }
 
-func CastVote(c *gin.Context) {
+/*func CastVote(c *gin.Context) {
 	var b VoteBody
 	err := c.BindJSON(&b)
 	if err != nil {
@@ -46,4 +38,4 @@ func CastVote(c *gin.Context) {
 	fmt.Print(candidates)
 
 	//.JSON(http.StatusOK, resolved)
-}
+}*/

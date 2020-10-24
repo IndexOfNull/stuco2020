@@ -4,12 +4,12 @@ import "github.com/indexofnull/stuco2020/config"
 
 //Student represents a student
 type Student struct {
-	ID        uint32  `json:"id" gorm:"primaryKey;"`
-	FirstName *string `json:"firstname" gorm:"not null;type:TEXT;"`
-	LastName  *string `json:"lastname" gorm:"not null;type:TEXT;"`
-	Email     *string `json:"email" gorm:"type:TEXT;"`
-	//Class     *Class  `json:"class" gorm:"constraint:OnDelete:SET NULL"`
-	VotesFor  *[]Class `json:"votes_for" gorm:"many2many:votes_for"`
+	ID        uint32   `json:"id" gorm:"primaryKey;"`
+	FirstName *string  `json:"firstname" gorm:"not null;type:TEXT;"`
+	LastName  *string  `json:"lastname" gorm:"not null;type:TEXT;"`
+	Email     *string  `json:"email" gorm:"type:TEXT;"`
+	Class     *Class   `json:"class" gorm:"constraint:OnDelete:SET NULL"`
+	VotesFor  *[]Class `json:"votes_for" gorm:"many2many:votes_for;constraint:OnDelete:CASCADE;"`
 	ClassID   *uint32  `json:"class_id"`
 	Candidate bool     `json:"candidate" gorm:"not null;default:0;index"`
 }

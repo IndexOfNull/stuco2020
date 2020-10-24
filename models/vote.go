@@ -7,8 +7,8 @@ type Vote struct {
 	CreatedAt time.Time `json:"created_at" gorm:"not null"`
 	CodeID    *uint32   `json:"code_id" gorm:"not null"`
 	Code      *Code     `gorm:"constraint:OnDelete:CASCADE"`
-	StudentID *uint32   `json:"student_id" gorm:"not null;"`
-	Student   *Student  `gorm:"constraint:OnDelete:CASCADE"`
+	/*StudentID *uint32   `json:"student_id" gorm:"not null;"`
+	Student   *Student  `gorm:"constraint:OnDelete:CASCADE"`*/
 	/*CandidateID *uint      `json:"candidate_id" gorm:"type:INTEGER;not null"`
 	Candidate   *Candidate `gorm:"constraint:OnDelete:CASCADE"`*/
 }

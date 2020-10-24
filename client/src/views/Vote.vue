@@ -14,23 +14,42 @@
         <header class="mb-4">
           <h1 class="text-5xl">Hello, {{ student.firstname }}</h1>
           <p>🗳️ Your ballot is below 🗳️</p>
-          <p class="italic opacity-50">(Remember: Your vote for a position will not count unless it says "This one's good to go!")</p>
+          <p class="italic opacity-50">
+            (Remember: Your vote for a position will not count unless it says
+            "This one's good to go!")
+          </p>
         </header>
-        <div class="p-2 rounded border-red-500 bg-red-400 text-red-900 border-2 mb-2" v-if="errors.length > 0">
-          <li v-for="(error, index) in errors" :key="`error-${index}`" >{{ error }}</li>
+        <div
+          class="p-2 rounded border-red-500 bg-red-400 text-red-900 border-2 mb-2"
+          v-if="errors.length > 0"
+        >
+          <li v-for="(error, index) in errors" :key="`error-${index}`">
+            {{ error }}
+          </li>
         </div>
         <form class="p-2">
           <div v-for="c in classes" :key="c.id">
-            <div 
+            <div
               class="p-4 mb-2 w bg-white rounded-lg text-black text-left transition-colors duration-100"
-              v-if="c.students.length > 0"  
+              v-if="c.students.length > 0"
             >
               <header class="mb-2">
                 <h1 class="sm:text-4xl text-3xl">{{ c.name }}</h1>
                 <!--p class="italic inline mr-1">(Pick {{ c.vote_count }})</p-->
                 <div class="italic inline text-red-900">
-                  <p v-if="c.selected.length == 0">(Currently abstaining, {{ c.vote_count }} votes needed)</p>
-                  <p v-else-if="c.selected.length != 0 && c.selected.length != c.vote_count">(Not enough votes, select {{ c.vote_count - c.selected.length }} more or leave none selected to abstain)</p>
+                  <p v-if="c.selected.length == 0">
+                    (Currently abstaining, {{ c.vote_count }} votes needed)
+                  </p>
+                  <p
+                    v-else-if="
+                      c.selected.length != 0 &&
+                        c.selected.length != c.vote_count
+                    "
+                  >
+                    (Not enough votes, select
+                    {{ c.vote_count - c.selected.length }} more or leave none
+                    selected to abstain)
+                  </p>
                   <p class="text-tertiary" v-else>This one's good to go!</p>
                 </div>
               </header>
@@ -41,7 +60,7 @@
               />
             </div>
           </div>
-          <button 
+          <button
             class="w-full h-12 bg-primary hover:bg-secondary transition-colors duration-100 text-black rounded disabled:opacity-25"
             :disabled="sendingVote == true"
             @click="submitVote"
@@ -80,46 +99,59 @@ export default {
   methods: {
     submitVote(e) {
       e.preventDefault();
-      this.errors = []
-      var payload = {"ballot": []}
-      this.classes.forEach(cls => { //Why did I call them 'class'? Now I have to use short abbrevations :(
+      this.errors = [];
+      var payload = { ballot: [] };
+      this.classes.forEach(cls => {
+        //Why did I call them 'class'? Now I have to use short abbrevations :(
 
         //Error checking
         if (cls.selected.length != 0 && cls.selected.length != cls.vote_count) {
-          this.errors.push(cls.name + " doesn't have enough votes. Select more candidates or deselect all to abstain.")
+          this.errors.push(
+            cls.name +
+              " doesn't have enough votes. Select more candidates or deselect all to abstain."
+          );
         }
-        let s = new Set(cls.selected)
+        let s = new Set(cls.selected);
         if (s.size != cls.selected.length) {
-          this.errors.push(cls.name + " has duplicate candidates selected. You may be able to fix this by reloading your page.")
+          this.errors.push(
+            cls.name +
+              " has duplicate candidates selected. You may be able to fix this by reloading your page."
+          );
         }
 
         //Payload assembly
         payload.ballot.push({
-          "id": cls.id,
-          "selected": cls.selected
-        })
-
+          id: cls.id,
+          selected: cls.selected
+        });
       });
 
       if (this.errors.length > 0) {
-        this.$refs.top.scrollIntoView({behavior: "smooth"});
-        return
+        this.$refs.top.scrollIntoView({ behavior: "smooth" });
+        return;
       }
 
       let s = this.$store.state;
       this.sendingVote = true;
-      axios.post(s.globalSettings.backendUrl + "vote/" + s.code, payload).then(response => {
-        if (response.data.error !== undefined) {
-          this.errors.push(response.data.error)
-          this.$refs.top.scrollIntoView({behavior: "smooth"});
-        }
-      }).catch(e => {
-        let data = e.response.data
-        if (data.error !== undefined) {
-          this.errors.push("Server error: " + data.error + ". If you have not intentially caused this, please report this immediately!")
-          this.$refs.top.scrollIntoView({behavior: "smooth"});
-        }
-      });
+      axios
+        .post(s.globalSettings.backendUrl + "vote/" + s.code, payload)
+        .then(response => {
+          if (response.data.error !== undefined) {
+            this.errors.push(response.data.error);
+            this.$refs.top.scrollIntoView({ behavior: "smooth" });
+          }
+        })
+        .catch(e => {
+          let data = e.response.data;
+          if (data.error !== undefined) {
+            this.errors.push(
+              "Server error: " +
+                data.error +
+                ". If you have not intentially caused this, please report this immediately!"
+            );
+            this.$refs.top.scrollIntoView({ behavior: "smooth" });
+          }
+        });
     }
   },
   beforeMount() {
@@ -147,11 +179,11 @@ export default {
         this.classes = data.student.votes_for;
 
         Object.keys(this.classes).forEach(key => {
-          let c = this.classes[key]
+          let c = this.classes[key];
           if (c.students.length == c.vote_count) {
-            c.selected = c.students.map(student => student.id)
+            c.selected = c.students.map(student => student.id);
           } else {
-            c.selected = []
+            c.selected = [];
           }
         });
 

@@ -1,6 +1,11 @@
 package models
 
 import (
+	"encoding/json"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+
 	"github.com/indexofnull/stuco2020/config"
 )
 
@@ -49,10 +54,35 @@ func Seed() {
 	config.DB.Debug().Model(&Student{}).Create(&people)
 	config.DB.Model(&Code{}).Create(&codes)
 }
+
+type Seeds struct {
+	Students []Student `json:"students"`
+	Classes  []Class   `json:"classes"`
+	Codes    []Code    `json:"codes"`
+}
+
+func SeedFromFile() error {
+	ex, err := os.Executable() // the current executable
+	if err != nil {
+		return err
 	}
-	config.DB.Model(&Code{}).Create(&codes)
+	exPath := filepath.Dir(ex)
+	data, err := ioutil.ReadFile(filepath.Join(exPath, "seed.json"))
+	if err != nil {
+		return err
+	}
+
+	var seeds Seeds
+	if err = json.Unmarshal(data, &seeds); err != nil {
+		return err
+	}
+
+	config.DB.Model(&Class{}).Create(&seeds.Classes)
+	config.DB.Debug().Model(&Student{}).Create(&seeds.Students)
+	config.DB.Model(&Code{}).Create(&seeds.Codes)
+	return nil
 }
 
 func DropAll() {
-	config.DB.Migrator().DropTable("classes", "students", "codes", "votes")
+	config.DB.Migrator().DropTable("classes", "students", "codes", "votes", "votes_for")
 }

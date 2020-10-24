@@ -13,6 +13,7 @@ import (
 )
 
 var shouldSeed = flag.Bool("s", false, "if set, the database will be seeded with testing values")
+var shouldSeedFromFile = flag.Bool("ff", false, "if -s is set and this is set, it will parse seed data from seeding.json")
 var shouldMigrate = flag.Bool("m", false, "if set, the database will be auto-migrated")
 var shouldDrop = flag.Bool("d", false, "if set, the database will be dropped before the program starts")
 
@@ -32,11 +33,18 @@ func main() {
 	}
 
 	if *shouldMigrate == true {
-		config.DB.AutoMigrate(&models.Class{}, &models.Student{}, &models.Code{}, &models.Vote{})
+		config.DB.Debug().AutoMigrate(&models.Class{}, &models.Student{}, &models.Code{}, &models.Vote{})
 	}
 	//migration.ServiceAutoMigration(config.DB)
 	if *shouldSeed == true {
-		models.Seed()
+		if *shouldSeedFromFile {
+			err := models.SeedFromFile()
+			if err != nil {
+				panic(err)
+			}
+		} else {
+			models.Seed()
+		}
 	}
 
 	r := routes.SetupRouter()

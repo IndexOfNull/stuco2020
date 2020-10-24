@@ -74,7 +74,6 @@ func CastVote(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("class %d doesn't exist or is outside of code scope", class.ID)})
 			return
 		}
-		fmt.Println(referenceClass.ID)
 
 		//Check for non-empty selections that aren't completely filled out (abstain if 0)
 		if len(class.Selected) != 0 && len(class.Selected) != int(referenceClass.NumVotes) {

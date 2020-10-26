@@ -16,13 +16,13 @@ type DBConfig struct {
 	Password string
 }
 
-func BuildDBConfig() *DBConfig {
+func BuildDBConfig(host string, port int, user string, pass string, name string) *DBConfig {
 	dbConfig := DBConfig{
-		Host:     "localhost",
-		Port:     3306,
-		User:     "dev", //GET THIS OUT OF THE CODE AND SOMEWHERE ELSE ASAP
-		Password: "",
-		DBName:   "stuco2020",
+		Host:     host,
+		Port:     port,
+		User:     user,
+		Password: pass,
+		DBName:   name,
 	}
 	return &dbConfig
 }

@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"flag"
 
+	"github.com/gin-gonic/gin"
 	"github.com/indexofnull/stuco2020/config"
 	"github.com/indexofnull/stuco2020/models"
 	"github.com/indexofnull/stuco2020/routes"
@@ -16,6 +18,7 @@ var shouldSeed = flag.Bool("s", false, "if set, the database will be seeded with
 var shouldSeedFromFile = flag.Bool("ff", false, "if -s is set and this is set, it will parse seed data from seeding.json")
 var shouldMigrate = flag.Bool("m", false, "if set, the database will be auto-migrated")
 var shouldDrop = flag.Bool("d", false, "if set, the database will be dropped before the program starts")
+var port = flag.String("p", "8080", "determines what port the program should bind to")
 
 var err error
 
@@ -33,9 +36,9 @@ func main() {
 	}
 
 	if *shouldMigrate == true {
-		config.DB.Debug().AutoMigrate(&models.Class{}, &models.Student{}, &models.Code{}, &models.Vote{})
+		config.DB.AutoMigrate(&models.Class{}, &models.Student{}, &models.Code{}, &models.Vote{})
 	}
-	//migration.ServiceAutoMigration(config.DB)
+
 	if *shouldSeed == true {
 		if *shouldSeedFromFile {
 			err := models.SeedFromFile()
@@ -47,6 +50,13 @@ func main() {
 		}
 	}
 
+	gin.SetMode(gin.ReleaseMode)
+	log.Println("Starting backend on :" + *port)
+
 	r := routes.SetupRouter()
-	r.Run()
+	err := r.Run(":" + *port)
+
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
 }

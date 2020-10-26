@@ -52,7 +52,7 @@ func GetCandidatesByIDs(students *[]Student, ids *[]uint32) error {
 
 //GetStudent retrieves a student by ID
 func GetStudent(student *Student, id uint32) error {
-	if err := config.DB.Debug().Joins("Class").Where(&Student{ID: id}).Find(student).Error; err != nil {
+	if err := config.DB.Joins("Class").Where(&Student{ID: id}).Find(student).Error; err != nil {
 		return err
 	}
 	return nil
@@ -68,7 +68,7 @@ func CreateStudent(student *Student) error {
 
 //DeleteStudent takes the passed Student and deletes it (if found).
 func DeleteStudent(student *Student, id uint32) (int64, error) {
-	q := config.DB.Debug().Where("id = ?", id).Delete(student)
+	q := config.DB.Where("id = ?", id).Delete(student)
 	if q.Error != nil {
 		return 0, q.Error
 	}

@@ -36,7 +36,7 @@ type Code struct {
 func ResolveCode(resolved *Code, code string) error {
 	var co Code
 	//var candidates []Student
-	if err := config.DB.Preload("Student.VotesFor.Students", "candidate = ?", true).Where("code = ?", code).Joins("Student").Find(&co).Error; err != nil {
+	if err := config.DB.Preload("Student.VotesFor.Students", "candidate = ?", true).Where("code = ?", code).Joins("Student").First(&co).Error; err != nil {
 		return err
 	}
 

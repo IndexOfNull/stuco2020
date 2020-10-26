@@ -118,9 +118,10 @@ func CastVote(c *gin.Context) {
 			}
 
 			//Append a vote to the slice
+			dereffedStudentID := studentID
 			v := &models.Vote{
 				CodeID:    &code.ID,
-				StudentID: &studentID,
+				StudentID: &dereffedStudentID,
 			}
 			finalVotes = append(finalVotes, v)
 		}

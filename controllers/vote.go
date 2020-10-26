@@ -56,7 +56,16 @@ func CastVote(c *gin.Context) {
 	}
 
 	var finalVotes []*models.Vote
+	var seenClasses []uint32
 	for _, class := range b.Ballot { //Checks about the ballot
+
+		for _, seenID := range seenClasses {
+			if seenID == class.ID {
+				c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": fmt.Sprintf("duplicate class %d", class.ID)})
+				return
+			}
+		}
+		seenClasses = append(seenClasses, class.ID)
 
 		//Deep integrity checks
 		if class.Selected == nil {

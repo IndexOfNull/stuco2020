@@ -27,7 +27,7 @@ export default {
   name: "CodeInput",
   computed: {
     code() {
-      return this.$store.state.code;
+      return this.$store.state.codeInput;
     }
   },
   data() {
@@ -45,11 +45,11 @@ export default {
   methods: {
     redirect: function() {
       if (this.code != "") {
-        this.$router.push("/vote/" + this.code);
+        this.$router.push({ name: "Vote", params: {code: this.code}});
       }
     },
     updateCode: function(e) {
-      this.$store.commit("code", e.target.value);
+      this.$store.commit("codeInput", e.target.value);
     }
   }
 };

@@ -19,6 +19,13 @@ const routes = [
     }
   },
   {
+    path: "/thanks",
+    name: "Thanks",
+    component: function() {
+      return import("../views/Thanks.vue");
+    }
+  },
+  {
     path: "/vote/:code",
     name: "Vote",
     component: function() {

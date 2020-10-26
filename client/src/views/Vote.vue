@@ -134,11 +134,15 @@ export default {
       let s = this.$store.state;
       this.sendingVote = true;
       axios
-        .post(s.globalSettings.backendUrl + "vote/" + s.code, payload)
+        .post(s.globalSettings.backendUrl + "vote/" + s.codeInput, payload)
         .then(response => {
-          if (response.data.error !== undefined) {
+          if (response.data.status == "success") {
+            this.$store.commit("codeUsed");
+            this.$router.push({ name: "Thanks" });
+          } else if (response.data.error !== undefined) {
             this.errors.push(response.data.error);
             this.$refs.top.scrollIntoView({ behavior: "smooth" });
+            this.sendingVote = false;
           }
         })
         .catch(e => {
@@ -151,15 +155,16 @@ export default {
             );
             this.$refs.top.scrollIntoView({ behavior: "smooth" });
           }
+          this.sendingVote = false;
         });
     }
   },
   beforeMount() {
-    this.$store.commit("code", this.$route.params.code); //Push the code to the store in case of direct navigation
+    this.$store.commit("codeInput", this.$route.params.code); //Push the code to the store in case of direct navigation
 
     let s = this.$store.state;
     axios
-      .get(s.globalSettings.backendUrl + "code/" + s.code)
+      .get(s.globalSettings.backendUrl + "code/" + s.codeInput)
       .then(response => {
         //Validation of code, throw error if necessary
         let data = response.data;
@@ -187,6 +192,7 @@ export default {
           }
         });
 
+        this.$store.commit("pushCode", this.code)
         setTimeout(() => {
           this.showBallot = true;
         }, 500); //Our UI is too fast otherwise lol

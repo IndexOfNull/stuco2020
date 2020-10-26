@@ -5,7 +5,8 @@ export default createStore({
   state() {
     return {
       redirectError: "",
-      code: "",
+      codeInput: "",
+      code: Object,
       globalSettings: globalSettings
     };
   },
@@ -16,8 +17,14 @@ export default createStore({
     clearerror(state) {
       state.redirectError = "";
     },
-    code(state, code) {
+    codeInput(state, code) {
+      state.codeInput = code;
+    },
+    pushCode(state, code) {
       state.code = code;
+    },
+    codeUsed(state) {
+      state.code.times_used += 1;
     }
   }
 });

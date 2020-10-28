@@ -3,9 +3,15 @@
     <div>
       <div v-for="student in options" :key="student.id" class="text-left">
         <div class="mb-1">
+          <span v-if="student.image != undefined" class="mr-2">
+            <img class="inline w-20 h-20 rounded" :src="student.image">
+          </span>
+          <span class="w-20" v-else>
+            <p class="inline bg-gray-300 mr-2 rounded p-2 w-full h-full text-sm">No Image</p>
+          </span>
           <input
             type="checkbox"
-            class="h-8 w-8 align-middle rounded form-checkbox text-primary"
+            class="h-10 w-10 align-middle rounded form-checkbox text-primary"
             :id="student.id"
             :value="student.id"
             :checked="modelValue.includes(student.id)"
@@ -17,7 +23,7 @@
             "
             v-on:change="onChange"
           />
-          <label class="text-lg ml-2 align-middle" :for="student.id"
+          <label class="text-xl ml-2 align-middle" :for="student.id"
             >{{ student.firstname }} {{ student.lastname }}</label
           >
         </div>

@@ -42,7 +42,6 @@ func main() {
 	}
 
 	serverPort := os.Getenv("SERVER_PORT")
-	fmt.Print(dbPass)
 	if dbHost == "" || dbPort == 0 || dbUser == "" || dbName == "" {
 		log.Fatalln("Missing databse information in .env file or environment variables")
 	}
